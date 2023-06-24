@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="fixed w-full bg-transparent z-50">
+    <nav className={`fixed w-full z-50 ${isScrolled ? 'bg-white bg-opacity-70 backdrop-filter backdrop-blur-lg duration-1000' : 'bg-transparent'}`}>
       <div className="container mx-auto flex items-center justify-between py-4 px-8">
         <div className="text-zinc-700 font-bold text-xl whitespace-nowrap">Yoga Retreat</div>
         <div className="flex items-center">
